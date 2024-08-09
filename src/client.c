@@ -13,22 +13,22 @@
 #include "../include/minitalk.h"
 
 // Função para validar o PID e a String
-void	error_exit(unsigned int server_pid, char *str)
+void	error_exit(pid_t server_pid, char *str)
 {
-	if (kill(server_pid, 0) != 0 || !ft_isdigit(server_pid))
+	if (kill(server_pid, 0) != 0)
 	{
-		ft_putstr_fd("error with PID", 1);
-		exit (EXIT_FAILURE);
+		ft_putstr_fd("Invalid PID\n", 1);
+		exit(EXIT_FAILURE);
 	}
-	else if (str[0] == '\0')
+	if (str[0] == '\0')
 	{
-		ft_putstr_fd("some error string", 1);
-		exit (EXIT_FAILURE);
+		ft_putstr_fd("String cannot be empty\n", 1);
+		exit(EXIT_FAILURE);
 	}
 }
 
 // Função para enviar cada caractere da string no PID do servidor 
-void	send_char(unsigned int server_pid, const char *str)
+void	send_char(pid_t server_pid, const char *str)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ void	send_char(unsigned int server_pid, const char *str)
 }
 
 // Função para enviar o caractere como um sinal para um PID
-void	send_signal(unsigned int server_pid, unsigned char c)
+void	send_signal(pid_t server_pid, unsigned char c)
 {
 	int	i;
 	unsigned char	temp;
@@ -63,11 +63,11 @@ int	main(int argc, char **argv)
 {
 	if (argc == 3)
 	{
-		error_exit(ft_atoi(argv[1]), argv[2]);
-		send_char(ft_atoi(argv[1]), argv[2]);
+		pid_t server_pid = ft_atoi(argv[1]);
+		error_exit(server_pid, argv[2]);
+		send_char(server_pid, argv[2]);
 		return (EXIT_SUCCESS);
 	}
 	ft_putstr_fd("Usage: ./client <server_pid> <message>\n", 1);
 	return (EXIT_FAILURE);
 }
-

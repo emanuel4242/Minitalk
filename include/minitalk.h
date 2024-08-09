@@ -16,11 +16,12 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <sys/types.h>  // Para pid_t
 
 // Prototipos das funções
-void	error_exit(unsigned int server_pid, char *str);
-void	send_char(unsigned int server_pid, const char *str);
-void	send_signal(unsigned int server_pid, unsigned char c);
+void	error_exit(pid_t server_pid, char *str);
+void	send_char(pid_t server_pid, const char *str);
+void	send_signal(pid_t server_pid, unsigned char c);
 size_t	ft_strlen(const char *s);
 void	ft_putstr_fd(char *s, int fd);
 int		ft_isdigit(int c);
