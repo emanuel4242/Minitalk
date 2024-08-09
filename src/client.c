@@ -13,6 +13,7 @@
 #include "../include/minitalk.h"
 
 // Função para validar o PID e a String
+/*
 void	error_exit(pid_t server_pid, char *str)
 {
 	if (kill(server_pid, 0) != 0)
@@ -26,7 +27,7 @@ void	error_exit(pid_t server_pid, char *str)
 		exit(EXIT_FAILURE);
 	}
 }
-
+*/
 // Função para enviar cada caractere da string no PID do servidor 
 void	send_char(pid_t server_pid, const char *str)
 {
@@ -65,11 +66,11 @@ int	main(int argc, char **argv)
 
 	if (argc == 3)
 	{
-		server_pid = ft_atoi(argv[1]);
-		error_exit(server_pid, argv[2]);
+		server_pid = atoi(argv[1]);
+		//error_exit(server_pid, argv[2]);
 		send_char(server_pid, argv[2]);
 		return (EXIT_SUCCESS);
 	}
-	ft_putstr_fd("Usage: ./client <server_pid> <message>\n", 1);
+	printf("Usage: ./client <server_pid> <message>\n");
 	return (EXIT_FAILURE);
 }
