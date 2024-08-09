@@ -10,25 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITAILK_H
+#ifndef MINITALK_H
 # define MINITALK_H
 
-# include <stdio.h>
 # include <unistd.h>
-# include <stdlib.h>
 # include <signal.h>
-# include <string.h>
+# include <stdlib.h>
 
-// function for client
-
+// Prototipos das funções
 void	error_exit(unsigned int server_pid, char *str);
 void	send_char(unsigned int server_pid, const char *str);
-void    send_signal(unsigned int server_pid, unsigned char c);
 void	send_signal(unsigned int server_pid, unsigned char c);
-
-int	ft_isdigit(int i);
-int	ft_atoi(const char *nptr);
-void	ft_putnbr_fd(int n, int fd);
+size_t	ft_strlen(const char *s);
 void	ft_putstr_fd(char *s, int fd);
+int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
+void	ft_putnbr_fd(int n, int fd);
+void	ft_putchar_fd(char c, int fd);
 
 #endif
