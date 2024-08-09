@@ -6,7 +6,7 @@
 /*   By: emalungo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:09:02 by emalungo          #+#    #+#             */
-/*   Updated: 2024/08/09 13:54:19 by emalungo         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:17:41 by emalungo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@ void	ft_putstr_fd(char *s, int fd)
 // Função para converter uma string em um inteiro
 int	ft_atoi(const char *str)
 {
-    int	sig;
-    int	result;
+	int	sig;
+	int	result;
 
-    sig = 1;
-    result = 0;
-    while (*str == ' ' || (*str >= 9 && *str <= 13))
-        str++;
-    if (*str == '-')
-        sig = -1;
-    if (*str == '+' || *str == '-')
-        str++;
-    while (*str >= '0' && *str <= '9')
-        result = result * 10 + (*str++ - '0');
-    return (result * sig);
+	sig = 1;
+	result = 0;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-')
+		sig = -1;
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str >= '0' && *str <= '9')
+		result = result * 10 + (*str++ - '0');
+	return (result * sig);
 }
 
 // Função para escrever um número inteiro no fd fornecido

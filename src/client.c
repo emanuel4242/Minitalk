@@ -6,7 +6,7 @@
 /*   By: emalungo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:27:49 by emalungo          #+#    #+#             */
-/*   Updated: 2024/08/09 13:30:04 by emalungo         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:32:04 by emalungo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,28 @@ void	send_char(pid_t server_pid, const char *str)
 // Função para enviar o caractere como um sinal para um PID
 void	send_signal(pid_t server_pid, unsigned char c)
 {
-	int	i;
 	unsigned char	temp;
+	int				i;
 
-	i = 8; // Deve ser 8 para enviar 8 bits (1 byte)
+	i = 8;
 	while (i--)
 	{
 		temp = (c >> i) & 1;
 		if (temp == 0)
-			kill(server_pid, SIGUSR1);
-		else
 			kill(server_pid, SIGUSR2);
+		else
+			kill(server_pid, SIGUSR1);
 		usleep(42);
 	}
 }
 
 int	main(int argc, char **argv)
 {
+	pid_t	server_pid;
+
 	if (argc == 3)
 	{
-		pid_t server_pid = ft_atoi(argv[1]);
+		server_pid = ft_atoi(argv[1]);
 		error_exit(server_pid, argv[2]);
 		send_char(server_pid, argv[2]);
 		return (EXIT_SUCCESS);
