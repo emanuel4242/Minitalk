@@ -10,25 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-
-void    send_signal(pid_t server_pid, unsigned char c);
+#include "../include/minitalk.h"
 
 // Funcao para vaidar o PID e a String
 void	error_exit(unsigned int server_pid, char *str)
 {
-	if (kill(server_pid, 0) != 0)
+	if (kill(server_pid, 0) != 0 && ft_isdigit(server_pid))
 	{
-		printf("error with PID %u: %s\n", server_pid, str);
+		ft_putstr_fd("error with PID %u: %s", 1);
+		ft_putstr_fd(server_pid, 1);
+		ft_putstr_fd(str, 1);
+		ft_putnbr_fd("\n", 1);
 		exit (EXIT_FAILURE);
 	}
 	else if (str[0] == '\0')
 	{
-		printf("some error string");
+		ft_putstr_fd("some error string", 1);
 		exit (EXIT_FAILURE);
 	}
 }
@@ -48,7 +45,7 @@ void	send_char(unsigned int server_pid, const char *str)
 }
 
 // Fucao para enviar o caractere como um sinal da um PID
-void	send_signal(pid_t server_pid, unsigned char c)
+void	send_signal(unsigned int server_pid, unsigned char c)
 {
 	int	i;
 	unsigned char	temp;
@@ -70,10 +67,11 @@ int	main(int argc, char **argv)
 {
 	if (argc == 3)
 	{
-		error_exit(atoi(argv[1]), argv[2]);
-		send_char(atoi(argv[1]), argv[2]);
+		
+		error_exit(ft_atoi(argv[1]), argv[2]);
+		send_char(ft_atoi(argv[1]), argv[2]);
 		return (EXIT_SUCCESS);
 	}
-	printf("Usage: %s <server_pid> <message>\n", argv[0]);
+	ft_putstr_fd("Usage: ./server <server_pid> <message>\n", 1);
 	return (EXIT_FAILURE);
 }
