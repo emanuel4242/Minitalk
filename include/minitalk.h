@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
 # include <sys/types.h>  // Para pid_t
 
 // Prototipos das funções
