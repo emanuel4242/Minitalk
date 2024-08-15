@@ -5,15 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emalungo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 10:27:49 by emalungo          #+#    #+#             */
-/*   Updated: 2024/08/09 17:32:04 by emalungo         ###   ########.fr       */
+/*   Created: 2024/08/15 11:32:46 by emalungo          #+#    #+#             */
+/*   Updated: 2024/08/15 13:11:01 by emalungo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "./minitalk.h"
 
 // Função para validar o PID e a String
-/*
 void	error_exit(pid_t server_pid, char *str)
 {
 	if (kill(server_pid, 0) != 0)
@@ -27,7 +26,7 @@ void	error_exit(pid_t server_pid, char *str)
 		exit(EXIT_FAILURE);
 	}
 }
-*/
+
 // Função para enviar cada caractere da string no PID do servidor 
 void	send_char(pid_t server_pid, const char *str)
 {
@@ -45,18 +44,19 @@ void	send_char(pid_t server_pid, const char *str)
 // Função para enviar o caractere como um sinal para um PID
 void	send_signal(pid_t server_pid, unsigned char c)
 {
-	unsigned char	temp;
+	unsigned int	temp;
 	int				i;
 
-	i = 8;
-	while (i--)
+	i = 7;
+	while (i >= 0)
 	{
 		temp = (c >> i) & 1;
 		if (temp == 0)
-			kill(server_pid, SIGUSR2);
-		else
 			kill(server_pid, SIGUSR1);
+		else
+			kill(server_pid, SIGUSR2);
 		usleep(42);
+		i--;
 	}
 }
 
@@ -66,11 +66,11 @@ int	main(int argc, char **argv)
 
 	if (argc == 3)
 	{
-		server_pid = atoi(argv[1]);
-		//error_exit(server_pid, argv[2]);
+		server_pid = ft_atoi(argv[1]);
+		error_exit(server_pid, argv[2]);
 		send_char(server_pid, argv[2]);
 		return (EXIT_SUCCESS);
 	}
-	printf("Usage: ./client <server_pid> <message>\n");
+	ft_putstr_fd("Usage: ./client <server_pid> <message>\n", 1);
 	return (EXIT_FAILURE);
 }

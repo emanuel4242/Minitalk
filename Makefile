@@ -1,18 +1,14 @@
-# Nome dos executáveis
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I./include
-RM = rm -f
-
-# Diretórios
-SRC_DIR = src
-INCLUDE_DIR = include
-OBJ_DIR = obj
+# Nome do compilador e flags
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
 # Arquivos fonte e objetos
-CLIENT_SRC = $(SRC_DIR)/client.c
-SERVER_SRC = $(SRC_DIR)/server.c
-CLIENT_OBJ = $(OBJ_DIR)/client.o
-SERVER_OBJ = $(OBJ_DIR)/server.o
+CLIENT_SRC = client.c
+SERVER_SRC = server.c
+UTILS_SRC = utils.c
+CLIENT_OBJ = client.o
+SERVER_OBJ = server.o
+UTILS_OBJ = utils.o
 
 # Nomes dos executáveis
 CLIENT = client
@@ -22,26 +18,28 @@ SERVER = server
 all: $(CLIENT) $(SERVER)
 
 # Compila o cliente
-$(CLIENT): $(CLIENT_OBJ)
+$(CLIENT): $(CLIENT_OBJ) $(UTILS_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Compila o servidor
-$(SERVER): $(SERVER_OBJ)
+$(SERVER): $(SERVER_OBJ) $(UTILS_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Compila os arquivos objeto para o cliente
-$(OBJ_DIR)/client.o: $(SRC_DIR)/client.c $(INCLUDE_DIR)/minitalk.h
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c -o $@ $<
+client.o: client.c minitalk.h
+	$(CC) $(CFLAGS) -c client.c
 
 # Compila os arquivos objeto para o servidor
-$(OBJ_DIR)/server.o: $(SRC_DIR)/server.c $(INCLUDE_DIR)/minitalk.h
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c -o $@ $<
+server.o: server.c minitalk.h
+	$(CC) $(CFLAGS) -c server.c
+
+# Compila os arquivos objeto para as utilidades
+utils.o: utils.c minitalk.h
+	$(CC) $(CFLAGS) -c utils.c
 
 # Limpa os arquivos compilados
 clean:
-	$(RM) -r $(OBJ_DIR)
+	$(RM) *.o
 
 # Remove os executáveis
 fclean: clean

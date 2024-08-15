@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emalungo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 10:09:02 by emalungo          #+#    #+#             */
-/*   Updated: 2024/08/09 17:17:41 by emalungo         ###   ########.fr       */
+/*   Created: 2024/08/15 11:41:19 by emalungo          #+#    #+#             */
+/*   Updated: 2024/08/15 12:01:23 by emalungo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "./minitalk.h"
 
 // Função para calcular o comprimento da string
 size_t	ft_strlen(const char *s)
