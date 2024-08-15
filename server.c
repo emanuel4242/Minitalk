@@ -12,8 +12,6 @@
 
 #include "./minitalk.h"
 
-#include "./minitalk.h"
-
 // Função para lidar com os sinais recebidos do cliente
 void	handle_signal(int signal)
 {
@@ -36,15 +34,18 @@ void	handle_signal(int signal)
 
 int	main(void)
 {
-	struct sigaction	sa;
-
+	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("  ___  ___ _ ____   _____ _ __ \n", 1);
+	ft_putstr_fd(" / __|/ _ \\ '__\\ \\ / / _ \\ '__|\n", 1);
+	ft_putstr_fd(" \\__ \\  __/ |   \\ V /  __/ |   \n", 1);
+	ft_putstr_fd(" |___/\\___|_|    \\_/ \\___|_|   \n", 1);
+	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\n", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar_fd('\n', 1);
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = handle_signal;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	signal(SIGUSR1, handle_signal);
+	signal(SIGUSR2, handle_signal);
 	while (1)
 		pause();
 	return (0);

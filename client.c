@@ -55,7 +55,7 @@ void	send_signal(pid_t server_pid, unsigned char c)
 			kill(server_pid, SIGUSR1);
 		else
 			kill(server_pid, SIGUSR2);
-		usleep(42);
+		usleep(500);
 		i--;
 	}
 }
@@ -66,6 +66,14 @@ int	main(int argc, char **argv)
 
 	if (argc == 3)
 	{
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("       _ _            _   \n", 1);
+		ft_putstr_fd("      | (_)          | |  \n", 1);
+		ft_putstr_fd("   ___| |_  ___ _ __ | |_ \n", 1);
+		ft_putstr_fd("  / __| | |/ _ \\ '_ \\| __|\n", 1);
+		ft_putstr_fd(" | (__| | |  __/ | | | |_ \n", 1);
+		ft_putstr_fd("  \\___|_|_|\\___|_| |_|\\__|\n", 1);
+		ft_putstr_fd("\n", 1);
 		server_pid = ft_atoi(argv[1]);
 		error_exit(server_pid, argv[2]);
 		send_char(server_pid, argv[2]);
