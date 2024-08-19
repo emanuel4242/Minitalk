@@ -15,21 +15,19 @@
 // Função para lidar com os sinais recebidos do cliente
 void	handle_signal(int signal)
 {
-	static unsigned char	temp = 0;
-	static int				bit = 0;
+	static unsigned char	temp;
+	static int				bit;
 
-	if (signal == SIGUSR2)
-		temp |= (1 << (7 - bit));
+	temp |= (signal == SIGUSR1);
 	bit++;
 	if (bit == 8)
 	{
-		if (temp == '\0')
-			ft_putchar_fd('\n', 1);
-		else
-			ft_putchar_fd(temp, 1);
+		ft_putchar_fd(&temp, 1);
 		bit = 0;
 		temp = 0;
 	}
+	else
+		temp = temp << 1;
 }
 
 int	main(void)

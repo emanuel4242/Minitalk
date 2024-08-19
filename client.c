@@ -45,18 +45,17 @@ void	send_char(pid_t server_pid, const char *str)
 void	send_signal(pid_t server_pid, unsigned char c)
 {
 	unsigned int	temp;
-	int				i;
+	int				bit;
 
-	i = 7;
-	while (i >= 0)
+	bit = 8;
+	while (bit-- > 0)
 	{
-		temp = (c >> i) & 1;
-		if (temp == 0)
-			kill(server_pid, SIGUSR1);
-		else
+		temp = (c >> bit) & 1;
+		if (temp % 2 == 0)
 			kill(server_pid, SIGUSR2);
-		usleep(500);
-		i--;
+		else
+			kill(server_pid, SIGUSR1);
+		usleep(50);
 	}
 }
 
