@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minitalk.h"
+#include "../include/minitalk.h"
 
 // Função para calcular o comprimento da string
 size_t	ft_strlen(const char *s)

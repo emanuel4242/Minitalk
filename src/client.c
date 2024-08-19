@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minitalk.h"
+#include "../include/minitalk.h"
 
 volatile sig_atomic_t	g_received = 0;
 
@@ -64,7 +64,7 @@ void	send_signal(pid_t server_pid, unsigned char c)
 		else
 			kill(server_pid, SIGUSR2);
 		while (!g_received)
-			usleep(42);
+			usleep(21);
 		bit--;
 	}
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minitalk.h"
+#include "../include/minitalk.h"
 
 // Função para lidar com os sinais recebidos do cliente
 void	handle_signal(int signal, siginfo_t *info, void *context)
