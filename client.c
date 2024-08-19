@@ -6,11 +6,20 @@
 /*   By: emalungo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:32:46 by emalungo          #+#    #+#             */
-/*   Updated: 2024/08/15 13:11:01 by emalungo         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:19:14 by emalungo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minitalk.h"
+
+volatile sig_atomic_t	g_received = 0;
+
+// Função para lidar com o sinal de confirmação do servidor
+void	signal_received(int signal)
+{
+	if (signal == SIGUSR1)
+		g_received = 1;
+}
 
 // Função para validar o PID e a String
 void	error_exit(pid_t server_pid, char *str)
@@ -44,18 +53,19 @@ void	send_char(pid_t server_pid, const char *str)
 // Função para enviar o caractere como um sinal para um PID
 void	send_signal(pid_t server_pid, unsigned char c)
 {
-	unsigned int	temp;
-	int				bit;
+	int	bit;
 
-	bit = 8;
-	while (bit-- > 0)
+	bit = 7;
+	while (bit >= 0)
 	{
-		temp = (c >> bit) & 1;
-		if (temp % 2 == 0)
-			kill(server_pid, SIGUSR2);
-		else
+		g_received = 0;
+		if ((c >> bit) & 1)
 			kill(server_pid, SIGUSR1);
-		usleep(50);
+		else
+			kill(server_pid, SIGUSR2);
+		while (!g_received)
+			usleep(42);
+		bit--;
 	}
 }
 
@@ -74,6 +84,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("  \\___|_|_|\\___|_| |_|\\__|\n", 1);
 		ft_putstr_fd("\n", 1);
 		server_pid = ft_atoi(argv[1]);
+		signal(SIGUSR1, signal_received);
 		error_exit(server_pid, argv[2]);
 		send_char(server_pid, argv[2]);
 		return (EXIT_SUCCESS);
