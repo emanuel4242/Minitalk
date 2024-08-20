@@ -1,77 +1,75 @@
-# Variáveis
-CC = gcc
+# Variables
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRC_DIR = src/
 BONUS_DIR = src/bonus/
 INCLUDE_DIR = include/
 OBJ_DIR = obj/
-LIB_DIR = lib/
 
-# Arquivos de origem
+# Source files
 SRC_FILES = $(SRC_DIR)client.c $(SRC_DIR)server.c $(SRC_DIR)utils.c
 BONUS_FILES = $(BONUS_DIR)client_bonus.c $(BONUS_DIR)server_bonus.c $(BONUS_DIR)utils_bonus.c
 HEADER = $(INCLUDE_DIR)minitalk.h
 BONUS_HEADER = $(INCLUDE_DIR)minitalk_bonus.h
 
-# Arquivos objeto
+# Object files
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 BONUS_OBJ_FILES = $(BONUS_FILES:$(BONUS_DIR)%.c=$(OBJ_DIR)%.o)
 
-# Executáveis
+# Executables
 CLIENT = client
 SERVER = server
 CLIENT_BONUS = client_bonus
 SERVER_BONUS = server_bonus
 
-# Biblioteca estática
-LIB_NAME = libminitalk.a
-BONUS_LIB_NAME = libminitalk_bonus.a
+# Default target
+all: $(CLIENT) $(SERVER)
+	@echo "🎉 \033[32mBuild successful:\033[0m $(CLIENT) and $(SERVER) are ready."
 
-# Regra padrão
-all: $(CLIENT) $(SERVER) $(LIB_DIR)$(LIB_NAME)
+# Rules for main executables
+$(CLIENT): $(OBJ_DIR)client.o $(OBJ_DIR)utils.o
+	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)client.o $(OBJ_DIR)utils.o
+	@echo "✅ \033[32m$(CLIENT) compiled successfully.\033[0m"
 
-# Regras para os executáveis principais
-$(CLIENT): $(OBJ_DIR)client.o $(OBJ_DIR)utils.o $(LIB_DIR)$(LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)client.o $(OBJ_DIR)utils.o -L$(LIB_DIR) -lminitalk
+$(SERVER): $(OBJ_DIR)server.o $(OBJ_DIR)utils.o
+	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)server.o $(OBJ_DIR)utils.o
+	@echo "✅ \033[32m$(SERVER) compiled successfully.\033[0m"
 
-$(SERVER): $(OBJ_DIR)server.o $(OBJ_DIR)utils.o $(LIB_DIR)$(LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)server.o $(OBJ_DIR)utils.o -L$(LIB_DIR) -lminitalk
+# Rules for bonus executables
+bonus: $(CLIENT_BONUS) $(SERVER_BONUS)
+	@echo "🎉 \033[32mBonus build successful:\033[0m $(CLIENT_BONUS) and $(SERVER_BONUS) are ready."
 
-# Regras para os executáveis bônus
-bonus: $(CLIENT_BONUS) $(SERVER_BONUS) $(LIB_DIR)$(BONUS_LIB_NAME)
+$(CLIENT_BONUS): $(OBJ_DIR)client_bonus.o $(OBJ_DIR)utils_bonus.o
+	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)client_bonus.o $(OBJ_DIR)utils_bonus.o
+	@echo "✅ \033[32m$(CLIENT_BONUS) compiled successfully.\033[0m"
 
-$(CLIENT_BONUS): $(OBJ_DIR)client_bonus.o $(OBJ_DIR)utils_bonus.o $(LIB_DIR)$(BONUS_LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)client_bonus.o $(OBJ_DIR)utils_bonus.o -L$(LIB_DIR) -lminitalk_bonus
+$(SERVER_BONUS): $(OBJ_DIR)server_bonus.o $(OBJ_DIR)utils_bonus.o
+	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)server_bonus.o $(OBJ_DIR)utils_bonus.o
+	@echo "✅ \033[32m$(SERVER_BONUS) compiled successfully.\033[0m"
 
-$(SERVER_BONUS): $(OBJ_DIR)server_bonus.o $(OBJ_DIR)utils_bonus.o $(LIB_DIR)$(BONUS_LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_DIR)server_bonus.o $(OBJ_DIR)utils_bonus.o -L$(LIB_DIR) -lminitalk_bonus
-
-# Compilação dos arquivos objeto
+# Compilation of object files
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "🔨 \033[34mCompiled $< into $@.\033[0m"
 
 $(OBJ_DIR)%.o: $(BONUS_DIR)%.c $(BONUS_HEADER)
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "🔨 \033[34mCompiled $< into $@.\033[0m"
 
-# Geração da biblioteca estática
-$(LIB_DIR)$(LIB_NAME): $(OBJ_FILES)
-	@mkdir -p $(LIB_DIR)
-	ar rcs $@ $(OBJ_DIR)client.o $(OBJ_DIR)utils.o
-
-$(LIB_DIR)$(BONUS_LIB_NAME): $(BONUS_OBJ_FILES)
-	@mkdir -p $(LIB_DIR)
-	ar rcs $@ $(OBJ_DIR)client_bonus.o $(OBJ_DIR)utils_bonus.o
-
-# Limpeza dos arquivos objeto, biblioteca e executáveis
+# Clean up object files and executables
 clean:
 	rm -rf $(OBJ_DIR)
+	@echo "🧹 \033[33mCleaned up object files.\033[0m"
 
 fclean: clean
-	rm -f $(CLIENT) $(SERVER) $(CLIENT_BONUS) $(SERVER_BONUS) $(LIB_DIR)$(LIB_NAME) $(LIB_DIR)$(BONUS_LIB_NAME)
+	rm -f $(CLIENT) $(SERVER) $(CLIENT_BONUS) $(SERVER_BONUS)
+	@echo "🧼 \033[33mCleaned up executables.\033[0m"
 
-# Recompila tudo
+# Rebuild everything
 re: fclean all
+	@echo "🔁 \033[32mRebuild complete:\033[0m $(CLIENT), $(SERVER), $(CLIENT_BONUS), and $(SERVER_BONUS) are ready."
 
+# Declare phony targets
 .PHONY: all clean fclean re bonus

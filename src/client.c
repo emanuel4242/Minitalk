@@ -14,14 +14,14 @@
 
 volatile sig_atomic_t	g_received = 0;
 
-// Função para lidar com o sinal de confirmação do servidor
+// Function to handle the confirmation signal from the server
 void	signal_received(int signal)
 {
 	if (signal == SIGUSR1)
 		g_received = 1;
 }
 
-// Função para validar o PID e a String
+// Function to validate the PID and the String
 void	error_exit(pid_t server_pid, char *str)
 {
 	if (kill(server_pid, 0) != 0)
@@ -36,7 +36,7 @@ void	error_exit(pid_t server_pid, char *str)
 	}
 }
 
-// Função para enviar cada caractere da string no PID do servidor 
+// Function to send each character of the string in the server PID 
 void	send_char(pid_t server_pid, const char *str)
 {
 	int	i;
@@ -50,7 +50,7 @@ void	send_char(pid_t server_pid, const char *str)
 	send_signal(server_pid, '\0');
 }
 
-// Função para enviar o caractere como um sinal para um PID
+// Function to send the character as a signal for a PID
 void	send_signal(pid_t server_pid, unsigned char c)
 {
 	int	bit;
@@ -64,7 +64,7 @@ void	send_signal(pid_t server_pid, unsigned char c)
 		else
 			kill(server_pid, SIGUSR2);
 		while (!g_received)
-			usleep(21);
+			usleep(100);
 		bit--;
 	}
 }

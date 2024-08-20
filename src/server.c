@@ -12,7 +12,7 @@
 
 #include "../include/minitalk.h"
 
-// Função para lidar com os sinais recebidos do cliente
+// Function to handle the received signals from the client
 void	handle_signal(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	temp = 0;
